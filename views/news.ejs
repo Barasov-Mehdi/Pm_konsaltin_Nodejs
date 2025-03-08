@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #444;
+            margin-top: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            max-width: 800px;
+            width: 100%;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        strong {
+            color: #007BFF;
+        }
+
+        p {
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .delete-form {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .delete-form button {
+            background: red;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                max-width: 100%;
+            }
+
+            ul {
+                padding: 0;
+            }
+
+            li {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-newspaper"></i> News Articles</h1>
+    
+    <h2>Add New Article</h2>
+    <form action="/news" method="POST">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" required></textarea>
+        
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+        
+        <button type="submit"><i class="fas fa-plus"></i> Add Article</button>
+    </form>
+    
+    <h2>All News</h2>
+    <ul>
+        <% news.forEach(article => { %>
+            <li>
+                <strong><i class="fas fa-heading"></i> <%= article.title %></strong>  
+                <br> 
+                <i class="fas fa-user"></i> <%= article.author %> 
+                <i class="fas fa-calendar-alt"></i> <%= article.date.toDateString() %>
+                <p><%= article.content %></p>
+                
+                <form class="delete-form" action="/news/delete/<%= article._id %>" method="POST">
+                    <button type="submit"><i class="fas fa-trash"></i> Delete</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #444;
+            margin-top: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            background: #007BFF;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .service-card strong {
+            color: #007BFF;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .service-card p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .delete-form {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .delete-form button {
+            background: red;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                max-width: 100%;
+            }
+
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1><i class="fas fa-cogs"></i> Our Services</h1>
+
+    <h2>Add New Service</h2>
+    <form action="/services" method="POST">
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            <option value="Vergi xidməti">Vergi xidməti</option>
+            <option value="Mühasibat xidməti">Mühasibat xidməti</option>
+            <option value="Mətbəə">Mətbəə</option>
+            <option value="Poliqrafiya">Poliqrafiya</option>
+        </select>
+
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" name="image" required>
+
+        <label for="name">Service Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="info">Info:</label>
+        <textarea id="info" name="info" required></textarea>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <button type="submit"><i class="fas fa-plus"></i> Add Service</button>
+    </form>
+
+    <h2>All Services</h2>
+    <div class="services-container">
+        <% services.forEach(service=> { %>
+            <div class="service-card">
+                <img src="<%= service.image %>" alt="<%= service.name %>">
+                <strong><i class="fas fa-briefcase"></i>
+                    <%= service.name %>
+                </strong>
+                <br>
+                <span><i class="fas fa-tags"></i>
+                    <%= service.category %>
+                </span>
+                <p>
+                    <%= service.description %>
+                </p>
+
+                <form class="delete-form" action="/services/delete/<%= service._id %>" method="POST">
+                    <button type="submit"><i class="fas fa-trash"></i> Delete</button>
+                </form>
+            </div>
+            <% }) %>
+    </div>
+</body>
+
+</html>
