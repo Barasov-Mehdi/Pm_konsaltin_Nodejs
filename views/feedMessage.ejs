@@ -92,28 +92,28 @@
 </head>
 
 <body>
-    <h1>Feedback Messages</h1>
+    <h1>Gələn mesajlar</h1>
 
-    <h2>All Feedback</h2>
+    <h2>Bütün mesajlar</h2>
     <ul>
         <% feedbacks.forEach(feedback=> { %>
             <li>
-                <strong><i class="fas fa-user"></i> Name:</strong>
+                <strong><i class="fas fa-user"></i> Ad:</strong>
                 <%= feedback.name %> <br>
-                    <strong><i class="fas fa-phone"></i> Phone Number:</strong>
+                    <strong><i class="fas fa-phone"></i> Telefon:</strong>
                     <%= feedback.number %> <br>
                         <strong><i class="fas fa-envelope"></i> Email:</strong>
                         <%= feedback.email %> <br>
-                            <strong><i class="fas fa-comment"></i> Message:</strong>
+                            <strong><i class="fas fa-comment"></i> Mesaj:</strong>
                             <%= feedback.message %> <br>
-                                <strong><i class="fas fa-calendar-alt"></i> Date:</strong>
+                                <strong><i class="fas fa-calendar-alt"></i> Tarix:</strong>
                                 <%= feedback.createdAt.toLocaleString() %>
                                     <hr>
             </li>
             <% }) %>
     </ul>
 
-    <a href="/feedback"><i class="fas fa-arrow-left"></i> Back to Submit Feedback</a>
+    <!-- <a href="/feedback"><i class="fas fa-arrow-left"></i> Back to Submit Feedback</a> -->
 </body>
 
 </html>

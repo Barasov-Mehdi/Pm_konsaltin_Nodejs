@@ -1,9 +1,24 @@
 const express = require('express');
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary'); // Cloudinary konfigürasyonu
 const Service = require('../models/service');
 
 const router = express.Router();
 
-// Tüm hizmetleri listeleme sayfası
+// Cloudinary Storage Konfigürasyonu
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'uploads',
+        allowedFormats: ['jpg', 'png', 'jpeg'],
+        transformation: [{ quality: "auto:low" }] // Otomatik düşük kalite
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Tüm hizmetleri listeleme
 router.get('/', async (req, res) => {
     try {
         const services = await Service.find();
@@ -14,9 +29,15 @@ router.get('/', async (req, res) => {
 });
 
 // Yeni hizmet ekleme
-router.post('/', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
     try {
-        const service = new Service(req.body);
+        const imageUrl = req.file.path; // Cloudinary'ye yüklenen resmin URL'si
+        const service = new Service({
+            category: req.body.category,
+            image: imageUrl,
+            name: req.body.name,
+            description: req.body.description
+        });
         await service.save();
         res.redirect('/services');
     } catch (error) {
@@ -27,6 +48,12 @@ router.post('/', async (req, res) => {
 // Hizmet silme
 router.post('/delete/:id', async (req, res) => {
     try {
+        const service = await Service.findById(req.params.id);
+        if (service) {
+            // Cloudinary'den resmi sil
+            const imagePublicId = service.image.split('/').pop().split('.')[0]; // Public ID'yi al
+            await cloudinary.uploader.destroy(`uploads/${imagePublicId}`);
+        }
         await Service.findByIdAndDelete(req.params.id);
         res.redirect('/services');
     } catch (error) {

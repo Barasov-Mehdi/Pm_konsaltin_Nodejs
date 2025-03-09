@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const feedbackRoutes = require('./routes/feedback'); // Route file for feedback
 const newsRoutes = require('./routes/news');         // Route file for news
 const serviceRoutes = require('./routes/service');   // Route file for services
-
+const deleteServiceRoutes = require('./routes/deleteService');
 require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use('/feedback', feedbackRoutes); // Feedback routes
 app.use('/news', newsRoutes);         // News routes
 app.use('/services', serviceRoutes);   // Services routes
-
+app.use('/deleteService', deleteServiceRoutes);
 // Optional: Home page route
 app.get('/', (req, res) => {
     res.render('index'); // Render the index.ejs file

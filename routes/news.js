@@ -12,6 +12,23 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/deleteNews', async (req, res) => {
+    const { title, author } = req.query;
+
+    let filter = {};
+    if (title) filter.title = { $regex: title, $options: 'i' }; // Case-insensitive search for title
+    if (author) filter.author = { $regex: author, $options: 'i' }; // Case-insensitive search for author
+
+    try {
+        const news = await News.find(filter);
+        res.render('deleteNews', { news, title, author });
+    } catch (error) {
+        res.status(500).send({ error: 'Haberler getirilirken hata oluştu!', details: error.message });
+    }
+});
+
+
+
 router.post('/', async (req, res) => {
     try {
         const news = new News(req.body);

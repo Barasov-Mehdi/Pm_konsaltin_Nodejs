@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #d9534f;
+            margin-bottom: 20px;
+        }
+
+        .news-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .news-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            position: relative;
+        }
+
+        .news-card strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 18px;
+            color: #007BFF;
+        }
+
+        .news-card p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .news-card small {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .delete-form {
+            text-align: right;
+        }
+
+        .delete-form button {
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .filter-form {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .filter-form input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        .filter-form button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-trash"></i> Xəbəri sil</h1>
+
+    <!-- Filtreleme Formu -->
+    <div class="filter-form">
+        <form action="/news/deleteNews" method="GET">
+            <input type="text" name="title" placeholder="Title ilə filtirlə" value="<%= title %>">
+            <input type="text" name="author" placeholder="Müəllif ilə filtirlə" value="<%= author %>">
+            <button type="submit"><i class="fas fa-search"></i> Filtir</button>
+        </form>
+    </div>
+
+    <div class="news-container">
+        <% news.forEach(article => { %>
+            <div class="news-card">
+                <strong><%= article.title %></strong>
+                <p><%= article.content.substring(0, 100) %>...</p>
+                <small>Müəllif: <%= article.author %> | Tarix: <%= article.date.toDateString() %></small>
+
+                <form class="delete-form" action="/news/delete/<%= article._id %>" method="POST">
+                    <button type="submit"><i class="fas fa-trash"></i> Sil</button>
+                </form>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>

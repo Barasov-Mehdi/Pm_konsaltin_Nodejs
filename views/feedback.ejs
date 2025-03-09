@@ -1,27 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback</title>
+    <title>All Feedbacks</title>
     <link rel="stylesheet" href="/styles.css"> <!-- CSS dosyanızı buraya ekleyin -->
 </head>
+<style>
+    /* Genel Stil */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f1f1f1;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 40px auto;
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        color: #007bff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Feedback Kartları */
+    .feedbacks-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+    }
+
+    .feedback-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feedback-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .feedback-card h3 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .feedback-card .feedback-date {
+        font-size: 0.9rem;
+        color: #777;
+    }
+
+    .feedback-card p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #555;
+        margin: 5px 0;
+    }
+
+    .feedback-card strong {
+        font-weight: bold;
+    }
+
+    /* Silme Butonu */
+    .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        width: 100%;
+    }
+
+    .delete-btn:hover {
+        background-color: #c0392b;
+        transform: scale(1.05);
+    }
+
+    /* Mobil uyumluluk */
+    @media (max-width: 768px) {
+        .feedback-card {
+            padding: 15px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+        }
+    }
+</style>
+
 <body>
-    <h1>Submit Feedback</h1>
-    <form action="/feedback" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="number">Phone Number:</label>
-        <input type="text" id="number" name="number" required>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
-        
-        <button type="submit">Submit Feedback</button>
-    </form>
+    <div class="container">
+        <h1 class="page-title">Gələn suallar</h1>
+
+        <div class="feedbacks-container">
+            <% feedbacks.forEach(feedback => { %>
+                <div class="feedback-card">
+                    <p><strong>Ad:</strong> <%= feedback.name %></p>
+                    <p><strong>Tel:</strong> <%= feedback.number %></p>
+                    <p><strong>Email:</strong> <%= feedback.email %></p>
+                    <p><strong>Mesaj:</strong> <%= feedback.message %></p>
+
+                    <!-- Silme Formu -->
+                    <form action="/feedback/delete/<%= feedback._id %>" method="POST">
+                        <button type="submit" class="delete-btn">Sil</button>
+                    </form>
+                </div>
+            <% }) %>
+        </div>
+    </div>
 </body>
+
 </html>

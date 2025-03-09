@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #dc3545;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .service-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+
+<body>
+    <h1><i class="fas fa-trash"></i> Delete Services</h1>
+
+    <!-- Kategoriye Göre Filtreleme -->
+    <div class="filter-container">
+        <label for="category">Filter by Category:</label>
+        <select id="category" onchange="filterServices()">
+            <option value="all">Hamısı</option>
+            <option value="Vergi xidməti">Vergi xidməti</option>
+            <option value="Mühasibat xidməti">Mühasibat xidməti</option>
+            <option value="Mətbəə">Mətbəə</option>
+            <option value="Poliqrafiya">Poliqrafiya</option>
+        </select>
+    </div>
+
+    <div class="services-container" id="services-list">
+        <% services.forEach(service => { %>
+            <div class="service-card" data-category="<%= service.category %>">
+                <img src="<%= service.image %>" alt="<%= service.name %>">
+                <strong><%= service.name %></strong>
+                <p><%= service.category %></p>
+                <button class="delete-btn" onclick="deleteService('<%= service._id %>')">
+                    <i class="fas fa-trash"></i> Sil
+                </button>
+            </div>
+        <% }) %>
+    </div>
+
+    <script>
+        function filterServices() {
+            const selectedCategory = document.getElementById('category').value;
+            const services = document.querySelectorAll('.service-card');
+
+            services.forEach(service => {
+                if (selectedCategory === 'all' || service.getAttribute('data-category') === selectedCategory) {
+                    service.style.display = "block";
+                } else {
+                    service.style.display = "none";
+                }
+            });
+        }
+
+        function deleteService(serviceId) {
+            if (confirm("Are you sure you want to delete this service?")) {
+                fetch(`/services/delete/${serviceId}`, { method: 'POST' })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert("Failed to delete the service.");
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
+    </script>
+</body>
+
+</html>
