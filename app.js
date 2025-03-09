@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 // Route definitions
 app.use('/feedback', feedbackRoutes); // Feedback routes
 app.use('/news', newsRoutes);         // News routes
-app.use('/services', serviceRoutes);   // Services routes
+app.use('/api/services', serviceRoutes);   // Services routes
 app.use('/deleteService', deleteServiceRoutes);
 // Optional: Home page route
 app.get('/', (req, res) => {
