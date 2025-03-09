@@ -18,11 +18,21 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-// Tüm hizmetleri listeleme
+// Tüm hizmetleri listeleme (sadece /services URL'si üzerinden)
 router.get('/', async (req, res) => {
     try {
         const services = await Service.find();
         res.render('services', { services });
+    } catch (error) {
+        res.status(500).send({ error: 'Hizmetler getirilirken hata oluştu!', details: error.message });
+    }
+});
+
+// Tüm hizmetleri JSON formatında almak için GET metodu
+router.get('/getAllServices', async (req, res) => {
+    try {
+        const services = await Service.find();
+        res.json(services); // JSON formatında geri döner
     } catch (error) {
         res.status(500).send({ error: 'Hizmetler getirilirken hata oluştu!', details: error.message });
     }
