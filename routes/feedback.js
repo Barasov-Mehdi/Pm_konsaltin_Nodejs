@@ -13,22 +13,20 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/api/feedback', async (req, res) => {
-    try {
-        console.log("Gelen veriler:", req.body);  // Veriyi logla
-        const { name, number, email, message } = req.body;
-        const feedback = new Feedback({
-            name,
-            number,
-            email,
-            message
-        });
+router.post('/', async (req, res) => {
+    const { name, number, email, message } = req.body;
 
-        await feedback.save();
-        res.status(201).json({ message: "Geri bildirim başarıyla alındı!" });
+    if (!name || !number || !email || !message) {
+        return res.status(400).json({ error: 'Tüm alanlar zorunludur!' });
+    }
+
+    try {
+        const newFeedback = new Feedback({ name, number, email, message });
+        await newFeedback.save();
+        res.status(201).json({ message: 'Geri bildirim başarıyla kaydedildi' });
     } catch (error) {
-        console.error("API Hata:", error);  // Detaylı hata logu
-        res.status(400).json({ error: error.message });
+        console.error(error);
+        res.status(500).json({ error: 'Veri kaydedilirken bir hata oluştu.' });
     }
 });
 
