@@ -16,13 +16,16 @@ router.get('/', async (req, res) => {
 // Geri bildirim ekleme
 router.post('/', async (req, res) => {
     try {
+        console.log("Gelen veri:", req.body); // Gelen veriyi konsolda görmek için
         const feedback = new Feedback(req.body);
         await feedback.save();
-        res.redirect('/feedback');
+        res.status(201).json({ message: "Geri bildirim başarıyla eklendi!" });
     } catch (error) {
-        res.status(400).send(error);
+        console.error("Hata:", error);
+        res.status(400).json({ error: error.message });
     }
 });
+
 
 // Silme işlemi için route (messages sayfasına yönlendirme)
 router.post('/delete/:id', async (req, res) => {
