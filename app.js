@@ -12,9 +12,9 @@ const app = express();
 
 // CORS ayarları
 const corsOptions = {
-    origin: '*',  // Bu, tüm domainlere izin verir. Güvenlik için burada belirli domainler de verebilirsiniz.
+    origin: '*',  // Bu, tüm domainlere izin verir
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type'],
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Authorization başlığını eklediğinizden emin olun
 };
 
 app.use(cors(corsOptions));  // CORS middleware'ini burada kullanıyoruz

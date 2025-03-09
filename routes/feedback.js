@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.post('/api/feedback', async (req, res) => {
     try {
-        console.log(req.body);  // Gelen veriyi logla
+        console.log("Gelen veriler:", req.body);  // Veriyi logla
         const { name, number, email, message } = req.body;
         const feedback = new Feedback({
             name,
@@ -27,7 +27,7 @@ router.post('/api/feedback', async (req, res) => {
         await feedback.save();
         res.status(201).json({ message: "Geri bildirim başarıyla alındı!" });
     } catch (error) {
-        console.error("API Hata:", error);
+        console.error("API Hata:", error);  // Detaylı hata logu
         res.status(400).json({ error: error.message });
     }
 });
