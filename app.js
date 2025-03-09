@@ -6,8 +6,13 @@ const newsRoutes = require('./routes/news');         // Route file for news
 const serviceRoutes = require('./routes/service');   // Route file for services
 const deleteServiceRoutes = require('./routes/deleteService');
 require('dotenv').config(); // Load environment variables from .env file
+const cors = require('cors'); // CORS paketini dahil ediyoruz
 
 const app = express();
+
+
+// CORS'u aktif hale getiriyoruz
+app.use(cors());
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
