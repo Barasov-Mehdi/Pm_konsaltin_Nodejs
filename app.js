@@ -10,9 +10,14 @@ const cors = require('cors'); // CORS paketini dahil ediyoruz
 
 const app = express();
 
+// CORS ayarları
+const corsOptions = {
+    origin: '*',  // Bu, tüm domainlere izin verir. Güvenlik için burada belirli domainler de verebilirsiniz.
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+};
 
-// CORS'u aktif hale getiriyoruz
-app.use(cors());
+app.use(cors(corsOptions));  // CORS middleware'ini burada kullanıyoruz
 
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
@@ -37,6 +42,7 @@ app.use('/feedback', feedbackRoutes); // Feedback routes
 app.use('/news', newsRoutes);         // News routes
 app.use('/services', serviceRoutes);   // Services routes
 app.use('/deleteService', deleteServiceRoutes);
+
 // Optional: Home page route
 app.get('/', (req, res) => {
     res.render('index'); // Render the index.ejs file
