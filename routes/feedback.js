@@ -13,12 +13,17 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Geri bildirim ekleme
-// API üzerinden geri bildirim eklxeme
 router.post('/api/feedback', async (req, res) => {
     try {
-        console.log("API'den gelen veri:", req.body);
-        const feedback = new Feedback(req.body);
+        console.log(req.body);  // Gelen veriyi logla
+        const { name, number, email, message } = req.body;
+        const feedback = new Feedback({
+            name,
+            number,
+            email,
+            message
+        });
+
         await feedback.save();
         res.status(201).json({ message: "Geri bildirim başarıyla alındı!" });
     } catch (error) {
@@ -26,8 +31,6 @@ router.post('/api/feedback', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
-
-
 
 // Silme işlemi için route (messages sayfasına yönlendirme)
 router.post('/delete/:id', async (req, res) => {
