@@ -38,6 +38,18 @@ router.get('/getAllServices', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        const service = await Service.findById(req.params.id);
+        if (!service) {
+            return res.status(404).send({ error: 'Hizmet bulunamadı!' });
+        }
+        res.json(service); // JSON olarak döner
+    } catch (error) {
+        res.status(500).send({ error: 'Hizmet detayları alınırken hata oluştu!', details: error.message });
+    }
+});
+
 // Yeni hizmet ekleme
 router.post('/', upload.single('image'), async (req, res) => {
     try {
