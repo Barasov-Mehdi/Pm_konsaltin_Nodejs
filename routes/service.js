@@ -6,19 +6,7 @@ const Service = require('../models/service');
 
 const router = express.Router();
 
-// Cloudinary Storage Konfigürasyonu
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'uploads',
-        allowedFormats: ['jpg', 'png', 'jpeg'],
-        transformation: [{ quality: "auto:low" }] // Otomatik düşük kalite
-    }
-});
-
-const upload = multer({ storage: storage });
-
-// Tüm hizmetleri listeleme (sadece /services URL'si üzerinden)
+// Tüm hizmetleri listeleme
 router.get('/', async (req, res) => {
     try {
         const services = await Service.find();
@@ -38,6 +26,7 @@ router.get('/getAllServices', async (req, res) => {
     }
 });
 
+// Tek hizmet getirme
 router.get('/:id', async (req, res) => {
     try {
         const service = await Service.findById(req.params.id);
@@ -51,18 +40,28 @@ router.get('/:id', async (req, res) => {
 });
 
 // Yeni hizmet ekleme
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        const imageUrl = req.file.path; // Cloudinary'ye yüklenen resmin URL'si
+        const { category, description } = req.body; // Formdan gelen veriler
+
+        // Gelen verileri kontrol edin
+        console.log('Formdan gelen veriler:', req.body);
+
+        // Validasyon kontrolü
+        if (!category || !description) {
+            return res.status(400).send({ error: 'Tüm alanların doldurulması gereklidir.' });
+        }
+
         const service = new Service({
-            category: req.body.category,
-            image: imageUrl,
-            name: req.body.name,
-            description: req.body.description
+            category,
+            description
         });
+
+        // Servisi kaydet
         await service.save();
         res.redirect('/services');
     } catch (error) {
+        console.error('Hata:', error); // Hata bilgilerini konsola yazdır
         res.status(400).send({ error: 'Hizmet eklenemedi!', details: error.message });
     }
 });
@@ -72,9 +71,7 @@ router.post('/delete/:id', async (req, res) => {
     try {
         const service = await Service.findById(req.params.id);
         if (service) {
-            // Cloudinary'den resmi sil
-            const imagePublicId = service.image.split('/').pop().split('.')[0]; // Public ID'yi al
-            await cloudinary.uploader.destroy(`uploads/${imagePublicId}`);
+            // Cloudinary'den resmi silme kodunu kaldırdım
         }
         await Service.findByIdAndDelete(req.params.id);
         res.redirect('/services');

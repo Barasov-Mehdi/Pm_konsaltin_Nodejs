@@ -154,28 +154,20 @@
     <h1><i class="fas fa-cogs"></i> Xidmətlərimiz</h1>
 
     <h2>Yeni Xidmət əlavə et</h2>
-    <form action="/services" method="POST" enctype="multipart/form-data">
-        <label for="category">Category:</label>
+    <form action="/services" method="POST">
+        <label for="category">Hizmet Kategorisi:</label>
         <select id="category" name="category" required>
+            <option value="">Seçin...</option>
             <option value="Vergi xidməti">Vergi xidməti</option>
             <option value="Mühasibat xidməti">Mühasibat xidməti</option>
             <option value="Mətbəə">Mətbəə</option>
             <option value="Poliqrafiya">Poliqrafiya</option>
         </select>
 
-        <label for="image">Şəkil:</label>
-        <input type="file" id="image" name="image" accept="image/*" required>
-
-        <label for="name">Xidmət adı:</label>
-        <input type="text" id="name" name="name" required>
-
-        <!-- <label for="info">Info:</label>
-        <textarea id="info" name="info"></textarea> -->
-
         <label for="description">Açıqlama:</label>
         <textarea id="description" name="description" required></textarea>
 
-        <button type="submit"><i class="fas fa-plus"></i> Add Service</button>
+        <button type="submit">Hizmeti Ekle</button>
     </form>
 
     <!-- <h2>All Services</h2>
